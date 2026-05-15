@@ -3,17 +3,30 @@ pub mod snake;
 
 use macroquad::prelude::*;
 use conf::window_conf;
-use snake::Snake;
+use snake::*;
+use crate::conf::SPEED_GAME;
 
 #[macroquad::main(window_conf)]
 async fn main() {
-    let snake: Snake = Default::default();
+    let mut snake: Snake = Default::default();
+    let mut timer: f64 = 0.0;
     loop {
         clear_background(DARKGRAY);
+
+        timer += get_frame_time() as f64;
+        if timer >= SPEED_GAME {
+            snake.move_snake();
+            timer = 0.0;
+        }
 
         if is_key_pressed(KeyCode::Escape) {
             break;
         }
+
+        if is_key_pressed(KeyCode::Up) { snake.change_direction(Direction::UP)}
+        if is_key_pressed(KeyCode::Down) { snake.change_direction(Direction::DOWN)}
+        if is_key_pressed(KeyCode::Left) { snake.change_direction(Direction::LEFT)}
+        if is_key_pressed(KeyCode::Right) { snake.change_direction(Direction::RIGHT)}
 
         snake.draw();
 

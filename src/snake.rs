@@ -3,7 +3,8 @@ use macroquad::math::Vec2;
 use macroquad::shapes::draw_rectangle;
 use crate::conf::{CASE_SIZE, GRID_WIDTH, GRID_HEIGHT};
 
-enum Direction {
+#[derive(PartialEq)]
+pub enum Direction {
     UP,
     DOWN,
     LEFT,
@@ -36,6 +37,34 @@ impl Snake {
                 CASE_SIZE,
                 color,
             )
+        }
+    }
+
+    pub fn move_snake(&mut self) {
+        for i in (1..self.body_position.len()).rev() {
+            self.body_position[i] = self.body_position[i-1];
+        }
+
+        let move_direction = match self.direction {
+            Direction::UP => Vec2::new(0.0, -1.0),
+            Direction::DOWN => Vec2::new(0.0, 1.0),
+            Direction::LEFT => Vec2::new(-1.0, 0.0),
+            Direction::RIGHT => Vec2::new(1.0, 0.0),
+        };
+
+        self.body_position[0] += move_direction;
+    }
+
+    pub fn change_direction(&mut self, new_direction: Direction) {
+        let invalid = match new_direction {
+            Direction::UP => self.direction == Direction::DOWN,
+            Direction::DOWN => self.direction == Direction::UP,
+            Direction::LEFT => self.direction == Direction::RIGHT,
+            Direction::RIGHT => self.direction == Direction::LEFT,
+        };
+
+        if !invalid {
+            self.direction = new_direction;
         }
     }
 }
