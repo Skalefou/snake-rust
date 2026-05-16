@@ -1,5 +1,5 @@
 use macroquad::color::{DARKGREEN, GREEN};
-use macroquad::math::Vec2;
+use macroquad::math::{IVec2};
 use macroquad::shapes::draw_rectangle;
 use crate::conf::{CASE_SIZE, GRID_WIDTH, GRID_HEIGHT};
 
@@ -12,14 +12,14 @@ pub enum Direction {
 }
 
 pub struct Snake {
-    body_position: Vec<Vec2>,
+    body_position: Vec<IVec2>,
     direction: Direction
 }
 
 impl Default for Snake {
     fn default () -> Self {
         Snake {
-            body_position: vec![Vec2::new(12.0,12.0)],
+            body_position: vec![IVec2::new(12,12)],
             direction: Direction::RIGHT
         }
     }
@@ -31,8 +31,8 @@ impl Snake {
             let color = if i == 1 { GREEN } else { DARKGREEN };
 
             draw_rectangle(
-                part.x * CASE_SIZE,
-                part.y * CASE_SIZE,
+                part.x as f32 * CASE_SIZE,
+                part.y as f32 * CASE_SIZE,
                 CASE_SIZE,
                 CASE_SIZE,
                 color,
@@ -46,10 +46,10 @@ impl Snake {
         }
 
         let move_direction = match self.direction {
-            Direction::UP => Vec2::new(0.0, -1.0),
-            Direction::DOWN => Vec2::new(0.0, 1.0),
-            Direction::LEFT => Vec2::new(-1.0, 0.0),
-            Direction::RIGHT => Vec2::new(1.0, 0.0),
+            Direction::UP => IVec2::new(0, -1),
+            Direction::DOWN => IVec2::new(0, 1),
+            Direction::LEFT => IVec2::new(-1, 0),
+            Direction::RIGHT => IVec2::new(1, 0),
         };
 
         self.body_position[0] += move_direction;
@@ -66,5 +66,9 @@ impl Snake {
         if !invalid {
             self.direction = new_direction;
         }
+    }
+
+    pub fn get_body_position(&self) -> &Vec<IVec2> {
+        &self.body_position
     }
 }
