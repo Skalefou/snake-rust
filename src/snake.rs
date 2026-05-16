@@ -28,7 +28,7 @@ impl Default for Snake {
 impl Snake {
     pub fn draw(&self) {
         for (i, part) in self.body_position.iter().enumerate() {
-            let color = if i == 1 { GREEN } else { DARKGREEN };
+            let color = if i == 0 { GREEN } else { DARKGREEN };
 
             draw_rectangle(
                 part.x as f32 * CASE_SIZE,
@@ -66,6 +66,15 @@ impl Snake {
         if !invalid {
             self.direction = new_direction;
         }
+    }
+
+    pub fn is_eating(&self, apple_position: &IVec2) -> bool {
+        self.body_position[0] == *apple_position
+    }
+
+    pub fn eat(&mut self) {
+        let last = self.body_position.last().unwrap();
+        self.body_position.push(*last);
     }
 
     pub fn get_body_position(&self) -> &Vec<IVec2> {

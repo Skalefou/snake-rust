@@ -33,6 +33,11 @@ async fn main() {
         if is_key_pressed(KeyCode::Left) { snake.change_direction(Direction::LEFT)}
         if is_key_pressed(KeyCode::Right) { snake.change_direction(Direction::RIGHT)}
 
+        if snake.is_eating(&apple.get_position()) {
+            snake.eat();
+            apple.respawn(snake.get_body_position());
+        }
+
         apple.draw();
         snake.draw();
 

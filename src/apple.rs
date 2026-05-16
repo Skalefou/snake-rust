@@ -43,4 +43,8 @@ impl Apple {
             }
         }
     }
+    
+    pub fn get_position(&self) -> &IVec2 {
+        &self.position
+    }
 }
