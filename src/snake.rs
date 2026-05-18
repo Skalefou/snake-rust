@@ -13,14 +13,16 @@ pub enum Direction {
 
 pub struct Snake {
     body_position: Vec<IVec2>,
-    direction: Direction
+    direction: Direction,
+    score: u32,
 }
 
 impl Default for Snake {
     fn default () -> Self {
         Snake {
             body_position: vec![IVec2::new(12,12)],
-            direction: Direction::RIGHT
+            direction: Direction::RIGHT,
+            score: 0
         }
     }
 }
@@ -75,9 +77,14 @@ impl Snake {
     pub fn eat(&mut self) {
         let last = self.body_position.last().unwrap();
         self.body_position.push(*last);
+        self.score += 1;
     }
 
     pub fn get_body_position(&self) -> &Vec<IVec2> {
         &self.body_position
+    }
+
+    pub fn get_score(&self) -> u32 {
+        self.score
     }
 }

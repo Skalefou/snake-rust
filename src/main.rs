@@ -38,6 +38,14 @@ async fn main() {
             apple.respawn(snake.get_body_position());
         }
 
+        draw_text(
+            &format!("Score : {}", snake.get_score()),
+            10.0,
+            24.0,
+            32.0,
+            WHITE,
+        );
+
         apple.draw();
         snake.draw();
 
