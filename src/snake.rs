@@ -87,4 +87,15 @@ impl Snake {
     pub fn get_score(&self) -> u32 {
         self.score
     }
+
+    pub fn is_game_over(&self) -> bool {
+        let out_of_bound =  self.body_position[0].x < 0 ||
+            self.body_position[0].y >= GRID_WIDTH as i32 ||
+            self.body_position[0].y >= GRID_HEIGHT as i32 ||
+            self.body_position[1].x < 0;
+
+        let self_collision = self.body_position[1..].contains(&self.body_position[0]);
+
+        self_collision || out_of_bound
+    }
 }
